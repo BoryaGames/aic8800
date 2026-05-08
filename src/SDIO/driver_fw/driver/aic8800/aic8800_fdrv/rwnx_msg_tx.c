@@ -22,6 +22,7 @@
 #include "rwnx_strs.h"
 #include "rwnx_main.h"
 #include "rwnx_wakelock.h"
+#include <linux/hardirq.h>
 
 const struct mac_addr mac_addr_bcst = {{0xFFFF, 0xFFFF, 0xFFFF}};
 
