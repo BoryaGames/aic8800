@@ -2046,7 +2046,7 @@ int reord_process_unit(struct aicwf_rx_priv *rx_priv, struct sk_buff *skb, u16 s
 		}
 	} else {
 	if (timer_pending(&preorder_ctrl->reord_timer)) {
-			ret = del_timer(&preorder_ctrl->reord_timer);
+			ret = timer_delete(&preorder_ctrl->reord_timer);
 	}
 	}
 	
@@ -2697,7 +2697,7 @@ check_len_update:
 							skb_tmp = defrag_info->skb;
 							list_del_init(&defrag_info->list);
 							if (timer_pending(&defrag_info->defrag_timer)) {
-								ret = del_timer(&defrag_info->defrag_timer);
+								ret = timer_delete(&defrag_info->defrag_timer);
 							}
 							kfree(defrag_info);
 							spin_unlock_bh(&rwnx_hw->defrag_lock);
