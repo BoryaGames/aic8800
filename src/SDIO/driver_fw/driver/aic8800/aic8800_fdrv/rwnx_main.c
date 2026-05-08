@@ -4077,7 +4077,7 @@ static int rwnx_cfg80211_get_channel(struct wiphy *wiphy,
 
 	if (rwnx_vif->vif_index == rwnx_hw->monitor_vif) {
 		//retrieve channel from firmware
-		rwnx_cfg80211_set_monitor_channel(wiphy, NULL);
+		rwnx_cfg80211_set_monitor_channel(wiphy, NULL, NULL);
 	}
 
 	//Check if channel context is valid
