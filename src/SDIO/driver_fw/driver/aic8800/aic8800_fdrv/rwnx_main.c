@@ -3658,7 +3658,7 @@ static int rwnx_cfg80211_set_monitor_channel(struct wiphy *wiphy, struct net_dev
 
 int rwnx_cfg80211_set_monitor_channel_(struct wiphy *wiphy,
                                              struct cfg80211_chan_def *chandef){
-    return rwnx_cfg80211_set_monitor_channel(wiphy, chandef);
+    return rwnx_cfg80211_set_monitor_channel(wiphy, NULL, chandef);
 }
 
 
