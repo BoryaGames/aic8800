@@ -2875,7 +2875,7 @@ static int rwnx_cfg80211_add_station(struct wiphy *wiphy,
 			#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 0, 0)
 			sinfo.filled |= STATION_INFO_ASSOC_REQ_IES;
 			#endif
-			cfg80211_new_sta(rwnx_vif->ndev, sta->mac_addr, &sinfo, GFP_KERNEL);
+			cfg80211_new_sta(rwnx_vif->ndev->ieee80211_ptr, sta->mac_addr, &sinfo, GFP_KERNEL);
 		}
 
 #ifdef CONFIG_BAND_STEERING
@@ -2991,7 +2991,7 @@ static int rwnx_cfg80211_del_station_compat(struct wiphy *wiphy,
 				}
 			}
 			if (rwnx_vif->wdev.iftype == NL80211_IFTYPE_AP || rwnx_vif->wdev.iftype == NL80211_IFTYPE_P2P_GO) {
-				cfg80211_del_sta(rwnx_vif->ndev, cur->mac_addr, GFP_KERNEL);
+				cfg80211_del_sta(rwnx_vif->ndev->ieee80211_ptr, cur->mac_addr, GFP_KERNEL);
 			}
 
 #ifdef AICWF_RX_REORDER
