@@ -10,6 +10,8 @@
  ******************************************************************************
  */
 
+#include <linux/timer.h>
+#include <linux/timex.h>
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/inetdevice.h>
