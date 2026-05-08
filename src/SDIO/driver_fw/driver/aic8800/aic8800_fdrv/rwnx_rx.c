@@ -2378,7 +2378,7 @@ check_len_update:
 #ifdef CONFIG_GKI
 			rwnx_cfg80211_rx_spurious_frame(rwnx_vif->ndev, hdr->addr2, GFP_ATOMIC);
 #else
-            cfg80211_rx_spurious_frame(rwnx_vif->ndev, hdr->addr2, GFP_ATOMIC);
+            cfg80211_rx_spurious_frame(rwnx_vif->ndev, hdr->addr2, -1, GFP_ATOMIC);
 #endif
 		}
 		goto end;
@@ -2754,7 +2754,7 @@ check_len_update:
 													   sta->mac_addr, GFP_ATOMIC);
 #else
                     cfg80211_rx_unexpected_4addr_frame(rwnx_vif->ndev,
-                                                       sta->mac_addr, GFP_ATOMIC);
+                                                       sta->mac_addr, -1, GFP_ATOMIC);
 #endif
 				}
 			}
