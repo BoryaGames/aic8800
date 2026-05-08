@@ -22,7 +22,6 @@
 #include "rwnx_strs.h"
 #include "rwnx_main.h"
 #include "rwnx_wakelock.h"
-#include <linux/hardirq.h>
 
 const struct mac_addr mac_addr_bcst = {{0xFFFF, 0xFFFF, 0xFFFF}};
 
@@ -309,7 +308,7 @@ static int rwnx_send_msg(struct rwnx_hw *rwnx_hw, const void *msg_params,
 
 	//RWNX_DBG(RWNX_FN_ENTRY_STR);
     AICWFDBG(LOGTRACE, "%s (%d)%s reqcfm:%d in_irq:%d in_softirq:%d in_atomic:%d\r\n",
-    __func__, reqid, RWNX_ID2STR(reqid), reqcfm, (int)in_irq(), (int)in_softirq(), (int)in_atomic());
+    __func__, reqid, RWNX_ID2STR(reqid), reqcfm, (int)in_hardirq(), (int)in_softirq(), (int)in_atomic());
 
 
 #ifdef AICWF_USB_SUPPORT
