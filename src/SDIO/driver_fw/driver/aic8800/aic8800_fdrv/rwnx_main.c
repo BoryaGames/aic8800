@@ -3561,7 +3561,7 @@ static int rwnx_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
 
 	/* delete any remaining STA*/
 	while (!list_empty(&rwnx_vif->ap.sta_list)) {
-		rwnx_cfg80211_del_station_compat(wiphy, dev, NULL);
+		rwnx_cfg80211_del_station_compat(wiphy, dev->ieee80211_ptr, NULL);
 	}
 
 #ifdef CONFIG_BAND_STEERING
