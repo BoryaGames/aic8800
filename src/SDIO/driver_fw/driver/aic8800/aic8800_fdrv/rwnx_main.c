@@ -2472,12 +2472,13 @@ static int rwnx_cfg80211_set_default_key(struct wiphy *wiphy,
  * @set_default_mgmt_key: set the default management frame key on an interface
  */
 static int rwnx_cfg80211_set_default_mgmt_key(struct wiphy *wiphy,
-											  struct net_device *netdev,
+											  struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE >= HIGH_KERNEL_VERSION2)
                                                                                           int link_id,
 #endif
 											  u8 key_index)
 {
+	struct net_device *netdev = wdev->netdev;
 	return 0;
 }
 
@@ -2788,7 +2789,7 @@ static int rwnx_cfg80211_external_auth(struct wiphy *wiphy, struct net_device *d
  * @add_station: Add a new station.
  */
 static int rwnx_cfg80211_add_station(struct wiphy *wiphy,
-	struct net_device *dev,
+	struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 0))
 	u8 *mac,
 #else
@@ -2796,6 +2797,7 @@ static int rwnx_cfg80211_add_station(struct wiphy *wiphy,
 #endif
 	struct station_parameters *params)
 {
+	struct net_device *dev = wdev->netdev;
 	struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
 	struct rwnx_vif *rwnx_vif = netdev_priv(dev);
 	struct me_sta_add_cfm me_sta_add_cfm;
@@ -2928,7 +2930,7 @@ static int rwnx_cfg80211_add_station(struct wiphy *wiphy,
  * @del_station: Remove a station
  */
 static int rwnx_cfg80211_del_station_compat(struct wiphy *wiphy,
-	struct net_device *dev,
+	struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 0))
 	u8 *mac
 #elif (LINUX_VERSION_CODE < KERNEL_VERSION(3, 19, 0))
@@ -2939,6 +2941,7 @@ static int rwnx_cfg80211_del_station_compat(struct wiphy *wiphy,
 
 )
 {
+	struct net_device *dev = wdev->netdev;
     struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
     struct rwnx_vif *rwnx_vif = netdev_priv(dev);
     struct rwnx_sta *cur, *tmp;
@@ -3207,7 +3210,7 @@ void apm_probe_sta_work_process(struct work_struct *work)
  *	cfg80211_check_station_change() to validate the information.
  */
 static int rwnx_cfg80211_change_station(struct wiphy *wiphy,
-	struct net_device *dev,
+	struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 0))
 	u8 *mac,
 #else
@@ -3215,6 +3218,7 @@ static int rwnx_cfg80211_change_station(struct wiphy *wiphy,
 #endif
 	struct station_parameters *params)
 {
+	struct net_device *dev = wdev->netdev;
 	struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
 	struct rwnx_vif *vif = netdev_priv(dev);
 	struct rwnx_sta *sta;
@@ -4844,7 +4848,7 @@ static int rwnx_fill_station_info(struct rwnx_sta *sta, struct rwnx_vif *vif,
  * @get_station: get station information for the station identified by @mac
  */
 static int rwnx_cfg80211_get_station(struct wiphy *wiphy,
-	struct net_device *dev,
+	struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 0))
 	u8 *mac,
 #else
@@ -4852,6 +4856,7 @@ static int rwnx_cfg80211_get_station(struct wiphy *wiphy,
 #endif
 	struct station_info *sinfo)
 {
+	struct net_device *dev = wdev->netdev;
 	struct rwnx_vif *vif = netdev_priv(dev);
 	struct rwnx_sta *sta = NULL;
 
@@ -4883,9 +4888,10 @@ static int rwnx_cfg80211_get_station(struct wiphy *wiphy,
 /**
  * @dump_station: dump station callback -- resume dump at index @idx
  */
-static int rwnx_cfg80211_dump_station(struct wiphy *wiphy, struct net_device *dev,
+static int rwnx_cfg80211_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 									  int idx, u8 *mac, struct station_info *sinfo)
 {
+	struct net_device *dev = wdev->netdev;
 	struct rwnx_vif *rwnx_vif = netdev_priv(dev);
 	//struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
 	struct rwnx_sta *sta_iter, *sta = NULL;
