@@ -2282,7 +2282,7 @@ bool key_flag = false;
  * @add_key: add a key with the given parameters. @mac_addr will be %NULL
  *	when adding a group key.
  */
-	static int rwnx_cfg80211_add_key(struct wiphy *wiphy, struct net_device *netdev,
+	static int rwnx_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE >= HIGH_KERNEL_VERSION2)
 																	 int link_id,
 #endif
@@ -2290,6 +2290,7 @@ bool key_flag = false;
 									 struct key_params *params)
 
 {
+	struct net_device *netdev = wdev->netdev;
 	struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
 	struct rwnx_vif *vif = netdev_priv(netdev);
 	int i, error = 0;
@@ -2397,7 +2398,7 @@ bool key_flag = false;
  *	not possible to retrieve the key, -ENOENT if it doesn't exist.
  *
  */
-static int rwnx_cfg80211_get_key(struct wiphy *wiphy, struct net_device *netdev,
+static int rwnx_cfg80211_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE >= HIGH_KERNEL_VERSION2)
                                                                  int link_id,
 #endif
@@ -2405,6 +2406,7 @@ static int rwnx_cfg80211_get_key(struct wiphy *wiphy, struct net_device *netdev,
 								 void *cookie,
 								 void (*callback)(void *cookie, struct key_params*))
 {
+	struct net_device *netdev = wdev->netdev;
 	RWNX_DBG(RWNX_FN_ENTRY_STR);
 
 	return -1;
@@ -2415,12 +2417,13 @@ static int rwnx_cfg80211_get_key(struct wiphy *wiphy, struct net_device *netdev,
  * @del_key: remove a key given the @mac_addr (%NULL for a group key)
  *	and @key_index, return -ENOENT if the key doesn't exist.
  */
-static int rwnx_cfg80211_del_key(struct wiphy *wiphy, struct net_device *netdev,
+static int rwnx_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 #if (LINUX_VERSION_CODE >= HIGH_KERNEL_VERSION2)
                                                                  int link_id,
 #endif
 								 u8 key_index, bool pairwise, const u8 *mac_addr)
 {
+	struct net_device *netdev = wdev->netdev;
 	struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
 	struct rwnx_vif *vif = netdev_priv(netdev);
 	int error;
@@ -3600,7 +3603,7 @@ static int rwnx_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
  * Also called internaly with chandef set to NULL simply to retrieve the channel
  * configured at firmware level.
  */
-static int rwnx_cfg80211_set_monitor_channel(struct wiphy *wiphy,
+static int rwnx_cfg80211_set_monitor_channel(struct wiphy *wiphy, struct net_device *dev,
 											 struct cfg80211_chan_def *chandef)
 {
 	struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
@@ -3712,7 +3715,7 @@ void rwnx_cfg80211_mgmt_frame_register(struct wiphy *wiphy,
  *	have changed. The actual parameter values are available in
  *	struct wiphy. If returning an error, no value should be changed.
  */
-static int rwnx_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
+static int rwnx_cfg80211_set_wiphy_params(struct wiphy *wiphy, int link_id, u32 changed)
 {
 	return 0;
 }
@@ -3726,7 +3729,7 @@ static int rwnx_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
  *	(as advertised by the nl80211 feature flag.)
  */
 static int rwnx_cfg80211_set_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
-									  enum nl80211_tx_power_setting type, int mbm)
+									  int link_id, enum nl80211_tx_power_setting type, int mbm)
 {
 	struct rwnx_hw *rwnx_hw = wiphy_priv(wiphy);
 	struct rwnx_vif *vif;
@@ -3757,7 +3760,7 @@ static int rwnx_cfg80211_get_tx_power(struct wiphy *wiphy,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0)
  struct wireless_dev *wdev,
 #endif
-	int *mbm)
+	int link_id, unsigned int freq, int *mbm)
 {
     #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 8, 0)
     struct wireless_dev *wdev = NULL;
