@@ -12,8 +12,7 @@
 struct wakeup_source *rwnx_wakeup_init(const char *name)
 {
 	struct wakeup_source *ws;
-	ws = wakeup_source_create(name);
-	wakeup_source_add(ws);
+	ws = wakeup_source_register(NULL, name);
 	return ws;
 }
 
